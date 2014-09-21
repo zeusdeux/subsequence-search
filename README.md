@@ -7,6 +7,8 @@ It behaves a lot like the sublime text fuzzy search.
 
 The resulting list can be transformed using chainable transforms.
 
+Demo it [here](http://codepen.io/anon/pen/HvxlL).
+
 ###Installation
 
 ```javascript
