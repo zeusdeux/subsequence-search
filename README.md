@@ -55,7 +55,7 @@ console.log(subsearch.search(data, 'fo', {
 
 A `transform` is a `function` that accepts an `Array` and returns a transformed `Array`.
 
-The `Array` received by a `transform` `function` is of the form of an `Array` returned by `String.prototype.match` `function`.
+The `Array` received by a `transform` `function` is of the form of an `Array` returned by `String.prototype.match`.
 For example:
 ```javascript
 var subsearch = require('subsequence-search');
