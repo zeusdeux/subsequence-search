@@ -1,0 +1,28 @@
+{
+  "name": "subsequence-search",
+  "version": "0.1.0",
+  "description": "Searches for a given subsequence in a list of strings and transforms the resulting list as customized",
+  "main": "./src/index.js",
+  "dependencies": {
+    "auto-curry": "^0.1.1"
+  },
+  "devDependencies": {
+    "browserify": "^5.12.0",
+    "jshint": "^2.5.5",
+    "uglify-js": "^2.4.15"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "subsequence",
+    "search",
+    "fuzzy",
+    "approximate",
+    "string",
+    "matching",
+    "matching"
+  ],
+  "author": "Mudit Ameta",
+  "license": "MIT"
+}
