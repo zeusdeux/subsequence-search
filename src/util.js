@@ -7,6 +7,14 @@ function getRegex(str) {
   return new RegExp(s, 'i');
 }
 
+//getMatchedList :: Array -> RegExp -> Array
+function getMatchedList(dataList, regex) {
+  return dataList.map(function(v) {
+    return v.match(regex);
+  });
+}
+
 module.exports = {
-  getRegex: getRegex
+  getRegex: getRegex,
+  getMatchedList: getMatchedList
 };

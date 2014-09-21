@@ -11,6 +11,8 @@ module.exports = function cu(fn) {
 };
 
 },{}],2:[function(require,module,exports){
+var cu = require('auto-curry');
+
 //type Classname = String
 //getHighlightedString :: Array -> Classname -> String
 function getHighlightedString(arr, className) {
@@ -24,20 +26,24 @@ function getHighlightedString(arr, className) {
 //getHighlightedResultsList :: String -> Array -> Array
 function getHighlightedResultsList(className, dataList) {
   return dataList.map(function(v) {
-    return getHighlightedString(v.slice(1), className);
+    return getHighlightedString(v.slice(1), className); //slicing first el cuz it has the full matched string
   });
 }
 
-module.exports = getHighlightedResultsList;
-},{}],3:[function(require,module,exports){
+module.exports = cu(getHighlightedResultsList);
+},{"auto-curry":1}],3:[function(require,module,exports){
+var cu = require('auto-curry');
+
 function getResultsList(dataList) {
   return dataList.map(function(v) {
     return v.slice(1).join(''); //slicing first el cuz it has the full matched string
   });
 }
 
-module.exports = getResultsList;
-},{}],4:[function(require,module,exports){
+module.exports = cu(getResultsList);
+},{"auto-curry":1}],4:[function(require,module,exports){
+var cu = require('auto-curry');
+
 //[31, 35, 36, 40]
 //(31-31) (35-31) (36-31) (40 - 31) = 18
 //   0       4       5        9     = 18 (this number denotes loose/tight grouping)
@@ -45,10 +51,10 @@ module.exports = getResultsList;
 //loosely grouped matches in this scheme
 //getRank :: Array -> Int
 function getRank(indicesArray) {
-  var firstElement;
+  var firstElementIndex;
   var groupingScore;
   if (indicesArray) {
-    firstElement = indicesArray[1];
+    firstElementIndex = indicesArray[1];
     groupingScore = indicesArray
     //get all odd indices
     .filter(function(v, i) {
@@ -58,7 +64,7 @@ function getRank(indicesArray) {
     .slice(0, -1)
     //get distance from first capture group index
     .map(function(v) {
-      return v - firstElement;
+      return v - firstElementIndex;
     })
     //sum grouping up to get grouping score
     .reduce(function(p, c) {
@@ -91,25 +97,37 @@ function getIndicesOfCaptures(inputString, matchedArray) {
 }
 
 function getRankedList(dataList) {
-  return dataList.sort(function(a, b) {
-    var aRank = getRank(getIndicesOfCaptures(a[0], a));
-    var bRank = getRank(getIndicesOfCaptures(b[0], b));
+  //create a duplicate of dataList to prevent
+  //mutation of Array pointed to by dataList as `sort` is in-situ
+  var tempDataList = dataList.slice(0);
+
+  return tempDataList.sort(function(a, b) {
+    var aIndices = getIndicesOfCaptures(a[0], a);
+    var bIndices = getIndicesOfCaptures(b[0], b);
+    var aRank = getRank(aIndices);
+    var bRank = getRank(bIndices);
     //rank higher? put el before
     if (aRank > bRank) return -1;
     //rank lower? put el after
     else if (aRank < bRank) return 1;
-    //ranks equal? The string with shorter length must come first then
+    //ranks equal? The matched string with first match closer to beginning of source string ranks higher
+    //ie., the smaller the index of the first capture group the higher it ranks
     else {
-      if (a[0].length < b[0].length) return -1;
-      if (a[0].length > b[0].length) return 1;
-      return 0;
+      if (aIndices[1] < bIndices[1]) return -1;
+      else if (aIndices[1] > bIndices[1]) return 1;
+      //ranks still equal? The smaller string ranks higher
+      else {
+        if (a[0].length < b[0].length) return -1;
+        if (a[0].length > b[0].length) return 1;
+        return 0;
+      }
     }
   });
 }
 
-module.exports = getRankedList;
+module.exports = cu(getRankedList);
 
-},{}],5:[function(require,module,exports){
+},{"auto-curry":1}],5:[function(require,module,exports){
 //getRegex :: String -> RegExp
 function getRegex(str) {
   var s = str.split('').map(function(v) {
@@ -119,43 +137,65 @@ function getRegex(str) {
   return new RegExp(s, 'i');
 }
 
-module.exports = {
-  getRegex: getRegex
-};
-},{}],"subsequence-search":[function(require,module,exports){
-var util = require('./util');
-var cu = require('auto-curry');
-var rank = cu(require('./transforms/rank'));
-var noHighlight = cu(require('./transforms/noHighlight'));
-var highlight = cu(require('./transforms/highlight'));
-
+//getMatchedList :: Array -> RegExp -> Array
 function getMatchedList(dataList, regex) {
   return dataList.map(function(v) {
     return v.match(regex);
   });
 }
 
+module.exports = {
+  getRegex: getRegex,
+  getMatchedList: getMatchedList
+};
+},{}],"subsequence-search":[function(require,module,exports){
+var util        = require('./util');
+var cu          = require('auto-curry');
+var rank        = require('./transforms/rank');
+var highlight   = require('./transforms/highlight');
+var noHighlight = require('./transforms/noHighlight');
+
+//search :: Array -> String -> Object -> Array
 function search(dataList, searchString, transforms) {
   var resultList;
 
+  //validating inputs
+  if (!dataList || !(dataList instanceof Array)) throw new SyntaxError('Data given to search function must be an array');
+  if (dataList.filter(function(v) {
+    return 'string' !== typeof v;
+  }).length) throw new SyntaxError('Data given to search function must be an array of strings');
+  if (dataList.length <= 0) return dataList;
+
+  if ('string' !== typeof searchString) throw new SyntaxError('Search string provided to search function must be a string');
+
+  if (!transforms || !Object.keys(transforms).length) {
+    console.warn('You haven\'t passed any transform. You might want to atleast pass highlight or noHighlight for proper result');
+    transforms = {};
+  }
+  //validations done
+  //start actual logic
   if (searchString) {
-    resultList = getMatchedList(dataList, util.getRegex(searchString));
+    //get matched list
+    resultList = util.getMatchedList(dataList, util.getRegex(searchString));
+    //remove all `null` elements from array
     resultList = resultList.filter(function(v) {
       return !!v;
     });
+    //apply transforms
     Object.keys(transforms).forEach(function(v) {
       v = transforms[v];
       if ('function' !== typeof v) throw new SyntaxError('Transforms must be a valid function taking one parameter and returing an array');
       resultList = v(resultList);
     });
-
+    //return result
     return resultList;
   }
+  //return data as is
   else return dataList;
 }
 
 module.exports = {
-  search: search,
+  search: cu(search),
   transforms: {
     rank: rank,
     highlight: highlight,

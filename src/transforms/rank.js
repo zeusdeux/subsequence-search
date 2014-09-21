@@ -1,3 +1,5 @@
+var cu = require('auto-curry');
+
 //[31, 35, 36, 40]
 //(31-31) (35-31) (36-31) (40 - 31) = 18
 //   0       4       5        9     = 18 (this number denotes loose/tight grouping)
@@ -5,10 +7,10 @@
 //loosely grouped matches in this scheme
 //getRank :: Array -> Int
 function getRank(indicesArray) {
-  var firstElement;
+  var firstElementIndex;
   var groupingScore;
   if (indicesArray) {
-    firstElement = indicesArray[1];
+    firstElementIndex = indicesArray[1];
     groupingScore = indicesArray
     //get all odd indices
     .filter(function(v, i) {
@@ -18,7 +20,7 @@ function getRank(indicesArray) {
     .slice(0, -1)
     //get distance from first capture group index
     .map(function(v) {
-      return v - firstElement;
+      return v - firstElementIndex;
     })
     //sum grouping up to get grouping score
     .reduce(function(p, c) {
@@ -51,20 +53,32 @@ function getIndicesOfCaptures(inputString, matchedArray) {
 }
 
 function getRankedList(dataList) {
-  return dataList.sort(function(a, b) {
-    var aRank = getRank(getIndicesOfCaptures(a[0], a));
-    var bRank = getRank(getIndicesOfCaptures(b[0], b));
+  //create a duplicate of dataList to prevent
+  //mutation of Array pointed to by dataList as `sort` is in-situ
+  var tempDataList = dataList.slice(0);
+
+  return tempDataList.sort(function(a, b) {
+    var aIndices = getIndicesOfCaptures(a[0], a);
+    var bIndices = getIndicesOfCaptures(b[0], b);
+    var aRank = getRank(aIndices);
+    var bRank = getRank(bIndices);
     //rank higher? put el before
     if (aRank > bRank) return -1;
     //rank lower? put el after
     else if (aRank < bRank) return 1;
-    //ranks equal? The string with shorter length must come first then
+    //ranks equal? The matched string with first match closer to beginning of source string ranks higher
+    //ie., the smaller the index of the first capture group the higher it ranks
     else {
-      if (a[0].length < b[0].length) return -1;
-      if (a[0].length > b[0].length) return 1;
-      return 0;
+      if (aIndices[1] < bIndices[1]) return -1;
+      else if (aIndices[1] > bIndices[1]) return 1;
+      //ranks still equal? The smaller string ranks higher
+      else {
+        if (a[0].length < b[0].length) return -1;
+        if (a[0].length > b[0].length) return 1;
+        return 0;
+      }
     }
   });
 }
 
-module.exports = getRankedList;
+module.exports = cu(getRankedList);

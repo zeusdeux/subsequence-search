@@ -1,3 +1,5 @@
+var cu = require('auto-curry');
+
 //type Classname = String
 //getHighlightedString :: Array -> Classname -> String
 function getHighlightedString(arr, className) {
@@ -11,8 +13,8 @@ function getHighlightedString(arr, className) {
 //getHighlightedResultsList :: String -> Array -> Array
 function getHighlightedResultsList(className, dataList) {
   return dataList.map(function(v) {
-    return getHighlightedString(v.slice(1), className);
+    return getHighlightedString(v.slice(1), className); //slicing first el cuz it has the full matched string
   });
 }
 
-module.exports = getHighlightedResultsList;
+module.exports = cu(getHighlightedResultsList);

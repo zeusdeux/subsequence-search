@@ -1,18 +1,22 @@
 # folders
-SRC = ./src
-BUILD = ./build
-BIN = $(NODEMOD)/.bin
-NODEMOD = ./node_modules
+SRC        = ./src
+TEST       = ./test
+BUILD      = ./build
+BIN        = $(NODEMOD)/.bin
+NODEMOD    = ./node_modules
 TRANSFORMS = $(SRC)/transforms
 
 # files
-MAIN = $(SRC)/index.js
-MAPFILE = subsequence-search.min.map
+MAIN       = $(SRC)/index.js
+MAPFILE    = subsequence-search.min.map
 
-all: jshint $(BUILD)/subsequence-search.min.js
+all: jshint test $(BUILD)/subsequence-search.min.js
 
 jshint:
 	$(BIN)/jshint $(SRC)/*
+
+test:
+	$(BIN)/mocha -r should -u bdd $(TEST)/*
 
 $(BUILD)/subsequence-search.min.js: $(BUILD)/subsequence-search.js
 	$(BIN)/uglifyjs $^ \
@@ -30,4 +34,4 @@ $(BUILD)/subsequence-search.js: $(SRC)/* $(NODEMOD)/auto-curry/index.js
 clean:
 	rm -f $(BUILD)/*
 
-.PHONY: all jshint clean
+.PHONY: all jshint test clean
