@@ -31,6 +31,7 @@ function getHighlightedResultsList(className, dataList) {
 }
 
 module.exports = cu(getHighlightedResultsList);
+
 },{"auto-curry":1}],3:[function(require,module,exports){
 var cu = require('auto-curry');
 
@@ -41,6 +42,7 @@ function getResultsList(dataList) {
 }
 
 module.exports = cu(getResultsList);
+
 },{"auto-curry":1}],4:[function(require,module,exports){
 var cu = require('auto-curry');
 
@@ -148,6 +150,7 @@ module.exports = {
   getRegex: getRegex,
   getMatchedList: getMatchedList
 };
+
 },{}],"subsequence-search":[function(require,module,exports){
 var util        = require('./util');
 var cu          = require('auto-curry');
