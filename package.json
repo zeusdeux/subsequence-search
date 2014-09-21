@@ -1,7 +1,7 @@
 {
   "name": "subsequence-search",
   "version": "0.1.0",
-  "description": "Searches for a given subsequence in a list of strings and transforms the resulting list as customized",
+  "description": "Search for a given subsequence in a list of strings and transform the resulting list as required",
   "main": "./src/index.js",
   "dependencies": {
     "auto-curry": "^0.1.1"
@@ -12,9 +12,6 @@
     "mocha": "^1.21.4",
     "should": "^4.0.4",
     "uglify-js": "^2.4.15"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "subsequence",
