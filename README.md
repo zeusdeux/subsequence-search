@@ -1,5 +1,6 @@
 subsequence-search
 ==================
+[![Build Status](https://travis-ci.org/zeusdeux/subsequence-search.svg?branch=master)](https://travis-ci.org/zeusdeux/subsequence-search)
 
 Search for a given subsequence in a list of strings and transform the resulting list as required.
 
