@@ -61,6 +61,7 @@ The `transforms` object can hold multiple `transform` functions.
 A `transform` is a `function` that accepts an `Array` and returns a transformed `Array`.
 
 The `Array` received by a `transform` `function` is of the form of an `Array` returned by `String.prototype.match`.
+
 For example:
 ```javascript
 var subsearch = require('subsequence-search');
@@ -82,7 +83,7 @@ As you can see in the image, each item is the same as what you get when you do
 ```javascript
 'some string'.match(/^(s)(.*?)(e)(.*)$/);
 ```
-i.e., a `match` with some capturing groups.
+i.e., a `String.prototype.match` with some capturing groups.
 
 You can chain as many `transform` functions as you want by passing them in the `transforms` object to the `search` call.
 
