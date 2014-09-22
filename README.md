@@ -55,6 +55,8 @@ console.log(subsearch.search(data, 'fo', {
 
 ####transforms
 
+The `transforms` object can hold multiple `transform` functions.
+
 A `transform` is a `function` that accepts an `Array` and returns a transformed `Array`.
 
 The `Array` received by a `transform` `function` is of the form of an `Array` returned by `String.prototype.match`.
