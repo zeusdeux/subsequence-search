@@ -78,7 +78,11 @@ subsearch.search(data, 'fo', {
 ```
 ![data printed in console](http://i.imgur.com/UA3ZtND.png)
 
-As you can see in the image, each item is the same as what you get when you do `'some string'.match(/^(s)(.*?)(e)(.*)$/)` i.e., a `match` with some capturing groups.
+As you can see in the image, each item is the same as what you get when you do 
+```javascript
+'some string'.match(/^(s)(.*?)(e)(.*)$/);
+```
+i.e., a `match` with some capturing groups.
 
 You can chain as many `transform` functions as you want by passing them in the `transforms` object to the `search` call.
 
