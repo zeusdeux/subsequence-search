@@ -39,7 +39,8 @@ In your browser code, go ahead and `require('subsequence-search)` to use it.
 
 - `dataList` is an array of `string`s that you want to match against
 - `searchString` is the `string` you want to match against the `dataList`
-- `transforms` is an `object` containing transform functions that are applied *in order* to the data list got after matching `searchString` and `dataList`. (transforms are explained [later](#transforms))
+- `transforms` is an `object` containing transform functions that are applied *in order* 
+   to the data list got after matching `searchString` and `dataList`. (transforms are explained [later](#transforms))
 
 E.g.,
 ```javascript
