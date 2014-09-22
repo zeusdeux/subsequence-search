@@ -16,11 +16,13 @@ Demo it [here](http://codepen.io/anon/pen/HvxlL).
 npm install subsequence-search --save
 ```
 
-####Node
+###Usage
+
+#####Node
 
 Go ahead and `require('subsequence-search)` in `node` after installation.
 
-####Browser
+#####Browser
 
 After installation, serve:
 
@@ -31,7 +33,7 @@ out of `node_modules/subsequence-search/build/`
 
 In your browser code, go ahead and `require('subsequence-search)` to use it.
 
-###Usage
+###API
 
 ####search(dataList, searchString, transforms)
 
