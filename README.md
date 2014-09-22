@@ -106,6 +106,10 @@ console.log(subsearch.search(data, 'fo', {
 
 ###Changelog
 
+- 0.1.2
+  + Fixed `package.json` (missing git repo)
+- 0.1.1
+  + Fixed documentation (added demo)
 - 0.1.0
   + added chainable `transforms`
   + added test suite

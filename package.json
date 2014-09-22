@@ -1,6 +1,6 @@
 {
   "name": "subsequence-search",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Search for a given subsequence in a list of strings and transform the resulting list as required",
   "main": "./src/index.js",
   "dependencies": {
@@ -23,5 +23,19 @@
     "matching"
   ],
   "author": "Mudit Ameta",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeusdeux/subsequence-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zeusdeux/subsequence-search/issues"
+  },
+  "homepage": "https://github.com/zeusdeux/subsequence-search"
 }
