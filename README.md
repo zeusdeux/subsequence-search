@@ -39,8 +39,8 @@ In your browser code, go ahead and `require('subsequence-search)` to use it.
 
 - `dataList` is an array of `string`s that you want to match against
 - `searchString` is the `string` you want to match against the `dataList`
-- `transforms` is an `object` containing transform functions 
-   - `transform` functions are applied *in order* to the data list got after matching `searchString` and `dataList`. (transforms are explained [later](#transforms))
+- `transforms` is an `object` containing `transform` functions (`transforms` are explained [later](#transforms))
+   - `transform` functions are applied *in order* to the data list got after matching `searchString` and `dataList`.
 
 E.g.,
 ```javascript
@@ -80,17 +80,18 @@ subsearch.search(data, 'fo', {
 
 As you can see in the image, each item is the same as what you get when you do `'some string'.match(/^(s)(.*?)(e)(.*)$/)` i.e., a `match` with some capturing groups.
 
-You can chain as many `transforms` as you want by passing them in the `transforms` object to the `search` call.
+You can chain as many `transform` functions as you want by passing them in the `transforms` object to the `search` call.
 
 The only thing to keep in mind is that they are applied *in order*.
 
-Keeping that in mind, you can do what you wish in those `transforms` to get the data in a format that is useful for your application.
+Keeping that in mind, you can do what you wish in those `transform` functions to get the data in a format that is useful for your application.
 
-`subsequence-search` ships with three transforms for your convenience. They are:
+`subsequence-search` ships with three `transform` functions for your convenience. They are:
 
-- `rank` : re-order the result to have most relevant results first
-- `highlight`: accepts a `css` class and transforms the result set to encapsulate the matching letters in a `span` with the given `css class`.
-- `noHighlight`: returns back plaintext matches
+- `rank` : returns a re-ordered `Array` that has the most relevant results higher in the list
+- `highlight`: accepts a `css` class and transforms the result set to encapsulate the matching letters in a `span` with the given `css` class
+   - it returns an array of strings
+- `noHighlight`: returns back an array of plaintext matches
 
 These are available on the `transforms` property on the object you get when you do `require('subsequence-search')` i.e.,
 
