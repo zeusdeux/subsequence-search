@@ -79,7 +79,7 @@ subsearch.search(data, 'fo', {
 ```
 ![data printed in console](http://i.imgur.com/UA3ZtND.png)
 
-As you can see in the image, each item is the same as what you get when you do 
+As you can see in the image, each item is the same as what you get when you do
 ```javascript
 'some string'.match(/^(s)(.*?)(e)(.*)$/);
 ```
@@ -115,8 +115,15 @@ console.log(subsearch.search(data, 'fo', {
 //["<span class="highlightClass">f</span><span class="highlightClass">o</span>xes are kinda cool!", "there is some <span class="highlightClass">f</span><span class="highlightClass">o</span>g"]
 ```
 
-###Changelog
+###Compatibility
+`subsequence-search` is compatible with browsers that are ES5 compliant.
 
+It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
+
+###Changelog
+- 0.1.3
+  + Change the order in which inputs are validated in `index.js`
+  + Added some more comments
 - 0.1.2
   + Fixed `package.json` (missing git repo)
 - 0.1.1
