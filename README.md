@@ -121,6 +121,8 @@ console.log(subsearch.search(data, 'fo', {
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ###Changelog
+- 0.1.4
+  + Subsequence is now searched for, non-greedily from the beginning of input string
 - 0.1.3
   + Change the order in which inputs are validated in `index.js`
   + Added some more comments
