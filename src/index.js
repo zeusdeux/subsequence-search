@@ -10,10 +10,10 @@ function search(dataList, searchString, transforms) {
 
   //validating inputs
   if (!dataList || !(dataList instanceof Array)) throw new SyntaxError('Data given to search function must be an array');
+  if (dataList.length <= 0) return dataList;
   if (dataList.filter(function(v) {
     return 'string' !== typeof v;
   }).length) throw new SyntaxError('Data given to search function must be an array of strings');
-  if (dataList.length <= 0) return dataList;
 
   if ('string' !== typeof searchString) throw new SyntaxError('Search string provided to search function must be a string');
 
