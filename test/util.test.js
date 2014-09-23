@@ -8,7 +8,7 @@ describe('util#getRegex', function() {
     });
     it('should return a RegExp of the form ^(.*)(val1)(.*?)(val2)(.*?)..etc(.*)$', function() {
       var r = util.getRegex('ab');
-      r.should.be.an.instanceof(RegExp).and.have.property('source', '^(.*)(a)(.*?)(b)(.*?)(.*)$');
+      r.should.be.an.instanceof(RegExp).and.have.property('source', '^(.*?)(a)(.*?)(b)(.*?)(.*)$');
     });
   });
 });
