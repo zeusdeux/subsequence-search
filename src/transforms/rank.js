@@ -52,6 +52,9 @@ function getIndicesOfCaptures(inputString, matchedArray) {
   }
 }
 
+//sort the input array and return the result as a new array
+//no mutation
+//getRankedList :: Array -> Array
 function getRankedList(dataList) {
   //create a duplicate of dataList to prevent
   //mutation of Array pointed to by dataList as `sort` is in-situ
