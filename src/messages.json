@@ -1,0 +1,7 @@
+{
+  "DataMustBeArray": "Data given to search function must be an array",
+  "DataMustBeStringArray": "Data given to search function must be an array of strings",
+  "SearchStringMustBeString": "Search string provided to search function must be a string",
+  "TransformMustBeSingleArgFunction": "Transforms must be a valid function taking one parameter and returing an array",
+  "NoTransformsWarning": "You haven't passed any transforms. You might want to atleast pass highlight or noHighlight to get a usable output (array of strings)."
+}

@@ -1,24 +1,36 @@
 var util        = require('./util');
 var cu          = require('auto-curry');
+var messages    = require('./messages');
 var rank        = require('./transforms/rank');
 var highlight   = require('./transforms/highlight');
 var noHighlight = require('./transforms/noHighlight');
 
-//search :: Array -> String -> Object -> Array
-function search(dataList, searchString, transforms) {
+/*
+ * search :: Array -> Object -> String -> Array
+ */
+
+/**
+ * This is the interface to subsequence-search.
+ * It searches for a pattern in a list of strings.
+ * @param  {Array}  dataList       List of string to search
+ * @param  {Object} transforms     Object of transforms to perform on resulting list
+ * @param  {String} searchString   Pattern to search for
+ * @return {Array}                 List of matched, transformed strings
+ */
+function search(dataList, transforms, searchString) {
   var resultList;
 
   //validating inputs
-  if (!dataList || !(dataList instanceof Array)) throw new SyntaxError('Data given to search function must be an array');
+  if (!dataList || !(dataList instanceof Array)) throw new SyntaxError(messages.DataMustBeArray);
   if (dataList.length <= 0) return dataList;
   if (dataList.filter(function(v) {
     return 'string' !== typeof v;
-  }).length) throw new SyntaxError('Data given to search function must be an array of strings');
+  }).length) throw new SyntaxError(messages.DataMustBeStringArray);
 
-  if ('string' !== typeof searchString) throw new SyntaxError('Search string provided to search function must be a string');
+  if ('string' !== typeof searchString) throw new SyntaxError(messages.SearchStringMustBeString);
 
   if (!transforms || !Object.keys(transforms).length) {
-    console.warn('You haven\'t passed any transform. You might want to atleast pass highlight or noHighlight for proper result');
+    console.warn(messages.NoTransformsWarning);
     transforms = {};
   }
   //validations done
@@ -33,7 +45,7 @@ function search(dataList, searchString, transforms) {
     //apply transforms
     Object.keys(transforms).forEach(function(v) {
       v = transforms[v];
-      if ('function' !== typeof v) throw new SyntaxError('Transforms must be a valid function taking one parameter and returing an array');
+      if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
       resultList = v(resultList);
     });
     //return result
