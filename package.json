@@ -1,10 +1,10 @@
 {
   "name": "subsequence-search",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Search for a given subsequence in a list of strings and transform the resulting list as required",
   "main": "./src/index.js",
   "dependencies": {
-    "auto-curry": "^0.1.1"
+    "auto-curry": "^0.2.0"
   },
   "devDependencies": {
     "browserify": "^5.12.0",
@@ -20,7 +20,7 @@
     "approximate",
     "string",
     "matching",
-    "matching"
+    "transform"
   ],
   "author": "Mudit Ameta",
   "license": "MIT",
