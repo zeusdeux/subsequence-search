@@ -4,9 +4,9 @@ subsequence-search
 
 Search for a given subsequence in a list of strings and transform the resulting list as required.
 
-It behaves a lot like the sublime text fuzzy search.
+Out of the box it can be made to behave a lot like the sublime text fuzzy search.
 
-The resulting list can be transformed using chainable transforms.
+The resulting list can be transformed using chainable [transforms](#transforms).
 
 Demo it [here](http://codepen.io/anon/pen/HvxlL).
 
@@ -16,11 +16,17 @@ Demo it [here](http://codepen.io/anon/pen/HvxlL).
 npm install subsequence-search --save
 ```
 
+or
+
+```javascript
+bower install subsequence-search --save
+```
+
 ###Usage
 
 #####Node
 
-Go ahead and `require('subsequence-search)` in `node` after installation.
+Go ahead and `require('subsequence-search)` in your `node` program after installation.
 
 #####Browser
 
@@ -31,11 +37,22 @@ After installation, serve:
 
 out of `node_modules/subsequence-search/build/`
 
-In your browser code, go ahead and `require('subsequence-search)` to use it.
+In your browser code, go ahead and use `window.subsequenceSearch` to use it globally
+
+or
+
+If you use a UMD compatible loader like `require.js` then go ahead and `require('subsequence-search')`.
+
+>The `search` as well as the built-in `transform` functions, all [auto-curry](https://github.com/zeusdeux/auto-curry)
+>when given an incomplete set of arguments. Therefore, you can make reusable
+>curried versions of those methods.
+>For example, `search` that works on some fixed input `dataList` and fixed set
+>of `transforms` but for varying `searchString`.
+>Cleaner, composable code should be the result.
 
 ###API
 
-####search(dataList, searchString, transforms)
+####search(dataList, transforms, searchString)
 
 - `dataList` is an array of `string`s that you want to match against
 - `searchString` is the `string` you want to match against the `dataList`
@@ -44,12 +61,13 @@ In your browser code, go ahead and `require('subsequence-search)` to use it.
 
 E.g.,
 ```javascript
-var subsearch = require('subsequence-search');
+var subsearch = window.subsequenceSearch; //or require('subsequence-search') in node
 var data = ['there is some fog', 'have an apple', 'omg! potato?', 'foxes are kinda cool!'];
-console.log(subsearch.search(data, 'fo', {
+
+console.log(subsearch.search(data, {
   rank: subsearch.transforms.rank,
   highlight: subsearch.transforms.highlight('highlightClass')
-}));
+}, 'fo'));
 //output
 //["<span class="highlightClass">f</span><span class="highlightClass">o</span>xes are kinda cool!", "there is some <span class="highlightClass">f</span><span class="highlightClass">o</span>g"]
 ```
@@ -64,16 +82,16 @@ The `Array` received by a `transform` `function` is of the form of an `Array` re
 
 For example:
 ```javascript
-var subsearch = require('subsequence-search');
+var subsearch = window.subsequenceSearch; //or require('subsequence-search') in node
 //lets say you have the following data
 var data = ['there is some fog', 'have an apple', 'omg! potato?', 'foxes are kinda cool!'];
 //and you do
-subsearch.search(data, 'fo', {
+subsearch.search(data, {
   myTransform: function(list){
     console.log(list);
     return list;
   }
-});
+}, 'fo');
 //then you get an array containing to arrays printed in your console
 //see the image below
 ```
@@ -101,16 +119,17 @@ Keeping that in mind, you can do what you wish in those `transform` functions to
 These are available on the `transforms` property on the object you get when you do `require('subsequence-search')` i.e.,
 
 ```javascript
-var subsearch = require('subsequence-search');
+var subsearch = window.subsequenceSearch; //or require('subsequence-search') in node
 //built in transforms:
 //subsearch.transforms.rank
 //subsearch.transforms.highlight(classname)
 //subsearch.transforms.noHighlight
 var data = ['there is some fog', 'have an apple', 'omg! potato?', 'foxes are kinda cool!'];
-console.log(subsearch.search(data, 'fo', {
+
+console.log(subsearch.search(data, {
   rank: subsearch.transforms.rank,
   highlight: subsearch.transforms.highlight('highlightClass')
-}));
+}, 'fo'));
 //output
 //["<span class="highlightClass">f</span><span class="highlightClass">o</span>xes are kinda cool!", "there is some <span class="highlightClass">f</span><span class="highlightClass">o</span>g"]
 ```
@@ -121,6 +140,12 @@ console.log(subsearch.search(data, 'fo', {
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ###Changelog
+- 0.2.0
+  + Changed the `search` signature to `search(dataList, transforms, searchString)` to enable users to curry it more effectively
+  + Added `bower` support
+  + Refactored some code
+  + Update [auto-curry](https://github.com/zeusdeux/auto-curry/) dependency
+  + Jsdoc-ed them files
 - 0.1.4
   + Subsequence is now searched for, non-greedily from the beginning of input string
 - 0.1.3
