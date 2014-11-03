@@ -224,7 +224,14 @@ It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequenc
 ###Changelog
 - 0.3.0
   + Nuked my whole repo thanks to Google Drive and my idiocy and hence npm won't be able to download previous versions since technically they don't exist anymore. GOD DAMN IT! My apologies. :(
-  + Massive rewrite to add support for `dataList` to be an object
+  + Massive rewrite to add support for `dataList` to be an object with shape
+
+    ```javascript
+      var dataList = {
+        data: [ ...objects... ],
+        searchInProps: [ ...properties in objects given above... ]
+      };
+    ```
   + Changed the signature for `search`. `transforms` object is now the first parameter. This signature, combined with the fact that `search` auto-curries, you can produce a custom search function with a particular `transform` sequence just once and use it whenever you need by supplying the remaining two parameters. Example:
     ```javascript
       var subsearch = window.subsequenceSearch; //or require('subsequence-search');
