@@ -95,8 +95,8 @@ describe('index#search', function() {
       res[1].join().should.be.exactly('Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990),,F,,o,,x Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)');
     });
   });
-  describe('when an object containing data and keys with some transforms is passed to search', function() {
-    it('should returned a transformed list', function() {
+  describe('when an object containing data and searchInProps with some transforms is passed to search', function() {
+    it('should return a transformed list with data[...searchInProps] that matched', function() {
       var output = index.search({
         rank: index.transforms.rank('b'),
         hh: index.transforms.highlight('highlighted'),
