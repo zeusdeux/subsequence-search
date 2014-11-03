@@ -1,0 +1,9 @@
+{
+  "DataMustBeArrayOrObject": "Data given to search function must be an array or object",
+  "DataMustBeStringArray": "Data given to search function must be an array of strings",
+  "SearchStringMustBeString": "Search string provided to search function must be a string",
+  "TransformMustBeSingleArgFunction": "Transforms must be a valid function taking one parameter and returing an array",
+  "NoTransformsWarning": "You haven't passed any transforms. You might want to atleast pass highlight or noHighlight to get a usable output (array of strings).",
+  "OnlyObjectCanBeCloned": "Argument to clone must be a valid javascript object",
+  "OnlyStringsAreSearchable": "A search can be performed only on properties that are defined and text i.e., properties that are defined and contain a text value "
+}

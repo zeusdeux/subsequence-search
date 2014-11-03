@@ -1,0 +1,5 @@
+node_modules
+*.log
+*.sublime-*
+/**/.DS_Store
+
