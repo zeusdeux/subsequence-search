@@ -194,7 +194,7 @@ Keeping that in mind, you can do what you wish in those `transform` functions to
 
 - `highlight`: accepts a `css` class and transforms the result set to encapsulate the matching letters in a `span` with the given `css` class
 
-  + it returns an array of strings
+  + its return value has the same shape as the input that was given to it
 
 - `noHighlight`: returns back an array of plaintext matches
 
