@@ -52,6 +52,7 @@ function search(transforms, dataList, searchString) {
   if (isArrayAndContainsNonString(dataList)) throw new SyntaxError(messages.DataMustBeStringArray);
   if ('string' !== typeof searchString) throw new SyntaxError(messages.SearchStringMustBeString);
 
+  //no transforms warning
   if (!transforms || !Object.keys(transforms).length) {
     console.warn(messages.NoTransformsWarning);
     transforms = {};
@@ -60,37 +61,36 @@ function search(transforms, dataList, searchString) {
   //validations done
   //start actual logic
   if (
-      dataList.length <= 0                          ||
-      (dataList.data && dataList.data.length <= 0)  ||
-      (dataList.searchInProps && dataList.searchInProps.length <= 0)  ||
-      Object.keys(dataList).length <= 0
-     ) return dataList;
+    dataList.length <= 0                                            ||
+    (dataList.data && dataList.data.length <= 0)                    ||
+    (dataList.searchInProps && dataList.searchInProps.length <= 0)  ||
+    Object.keys(dataList).length <= 0
+  ) return dataList;
 
-  if (searchString) {
-    //get matched list
-    resultList = util.getMatchedList(dataList, util.getRegex(searchString));
-    if (isArray(resultList)) {
-      //remove all `null` elements from array
-      resultList = resultList.filter(function(v) {
-        return !!v;
-      });
-    }
-    else {
-      resultList.data = resultList.data.filter(function(v) {
-        return !!v;
-      });
-    }
-    //apply transforms
-    Object.keys(transforms).forEach(function(v) {
-      v = transforms[v];
-      if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
-      resultList = v(resultList);
+
+  //get matched list
+  resultList = util.getMatchedList(dataList, util.getRegex(searchString));
+  if (isArray(resultList)) {
+    //remove all `null` elements from array
+    resultList = resultList.filter(function(v) {
+      return !!v;
     });
-    //return result
-    return resultList;
   }
-  //return data as is if searchString is falsy
-  else return dataList;
+  else {
+    resultList.data = resultList.data.filter(function(v) {
+      return !!v;
+    });
+  }
+
+  //apply transforms
+  Object.keys(transforms).forEach(function(v) {
+    v = transforms[v];
+    if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
+    resultList = v(resultList);
+  });
+
+  //return result
+  return resultList;
 }
 
 module.exports = {
@@ -113,12 +113,13 @@ module.exports={
   "OnlyStringsAreSearchable": "A search can be performed only on properties that are defined and text i.e., properties that are defined and contain a text value "
 }
 },{}],4:[function(require,module,exports){
-var util = require('../util');
-var cu = require('auto-curry');
+var util     = require('../util');
+var cu       = require('auto-curry');
 var messages = require('../messages');
-var clone = util.clone;
-var isArray = util.isArray;
+var clone    = util.clone;
+var isArray  = util.isArray;
 var isObject = util.isObject;
+
 
 /*
  * type Classname = String
@@ -134,7 +135,7 @@ var isObject = util.isObject;
 function getHighlightedString(arr, className) {
   if (arr && arr.length > 0) {
     return arr.map(function(v, i) {
-      if (i % 2 !== 0 && i !== arr.length - 1) return '<span class="' + className + '">' + v + '</span>';
+      if (i % 2 !== 0 && i !== arr.length - 1 && v !== '') return '<span class="' + className + '">' + v + '</span>';
       else return v;
     }).join('');
   }
@@ -168,8 +169,8 @@ function getHighlightedResultsList(className, dataList) {
        */
       var tempDataList = clone(dataList);
 
-      tempDataList.data = tempDataList.data.map(function(data){
-        tempDataList.searchInProps.forEach(function(key){
+      tempDataList.data = tempDataList.data.map(function(data) {
+        tempDataList.searchInProps.forEach(function(key) {
           if (data[key]) data[key] = getHighlightedString(data[key].slice(1), className);
         });
         return data;
@@ -184,7 +185,6 @@ module.exports = cu(getHighlightedResultsList);
 
 },{"../messages":3,"../util":7,"auto-curry":1}],5:[function(require,module,exports){
 var util     = require('../util');
-var cu       = require('auto-curry');
 var messages = require('../messages');
 var clone    = util.clone;
 var isArray  = util.isArray;
@@ -227,9 +227,9 @@ function getResultsList(dataList) {
   else throw new SyntaxError(messages.DataMustBeArrayOrObject);
 }
 
-module.exports = cu(getResultsList);
+module.exports = getResultsList;
 
-},{"../messages":3,"../util":7,"auto-curry":1}],6:[function(require,module,exports){
+},{"../messages":3,"../util":7}],6:[function(require,module,exports){
 var util     = require('../util');
 var cu       = require('auto-curry');
 var messages = require('../messages');
@@ -262,7 +262,7 @@ function getRank(indicesArray) {
   if (indicesArray) {
     firstElementIndex = indicesArray[1];
     groupingScore = indicesArray
-      //get all odd indices
+      //get all odd indices because they correspond to the capture groups in the regex (see util#getRegex)
       .filter(function(v, i) {
         return i % 2 !== 0;
       })
@@ -363,6 +363,12 @@ function getRankingFnForIndices(idx1, idx2) {
       else {
         var aLen = idx2 || idx2 === 0 ? a[idx1][idx2].length : a[idx1].length;
         var bLen = idx2 || idx2 === 0 ? b[idx1][idx2].length : b[idx1].length;
+
+        //if both elements have rank as 0
+        //then that almost always (todo: confirm this) means that this is the case
+        //where empty searchString was given to index#search
+        //So just return 0 and don't change any order
+        if (aRank === 0 && bRank === 0) return 0;
         if (aLen < bLen) return -1;
         if (aLen > bLen) return 1;
         return 0;
@@ -488,7 +494,7 @@ function isArray(arg) {
  * @param  {Any}  arg
  * @return {Boolean}
  */
-function isString(arg){
+function isString(arg) {
   return 'string' === typeof arg;
 }
 
@@ -506,7 +512,7 @@ function clone(obj) {
   var temp;
   if (isObject(obj)) {
     temp = {};
-    for (var key in obj){
+    for (var key in obj) {
       if (obj.hasOwnProperty(key)) temp[key] = obj[key];
     }
     return temp;
