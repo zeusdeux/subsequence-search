@@ -222,6 +222,8 @@ console.log(subsearch.search({
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ###Changelog
+- 0.3.2
+  + Built in a workaround for the instability of `Array.prototype.sort` implemented by browser vendors
 - 0.3.1
   + Bugfixes
     * The way `subsequence-search` handled an empty `searchString` is now fixed and should work as a user would expect it to
