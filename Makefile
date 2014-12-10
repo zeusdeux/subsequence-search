@@ -18,7 +18,7 @@ jshint:
 	$(BIN)/jshint $(SRC)/*.js
 
 test:
-	$(BIN)/mocha -r should -u bdd $(TEST)/*
+	$(BIN)/mocha -r should -u bdd -b $(TEST)/*
 
 $(BUILD)/subsequence-search.min.js: $(BUILD)/subsequence-search.js
 	$(BIN)/uglifyjs $^ \
