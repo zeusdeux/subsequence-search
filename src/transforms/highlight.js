@@ -1,9 +1,10 @@
-var util = require('../util');
-var cu = require('auto-curry');
+var util     = require('../util');
+var cu       = require('auto-curry');
 var messages = require('../messages');
-var clone = util.clone;
-var isArray = util.isArray;
+var clone    = util.clone;
+var isArray  = util.isArray;
 var isObject = util.isObject;
+
 
 /*
  * type Classname = String
@@ -19,7 +20,7 @@ var isObject = util.isObject;
 function getHighlightedString(arr, className) {
   if (arr && arr.length > 0) {
     return arr.map(function(v, i) {
-      if (i % 2 !== 0 && i !== arr.length - 1) return '<span class="' + className + '">' + v + '</span>';
+      if (i % 2 !== 0 && i !== arr.length - 1 && v !== '') return '<span class="' + className + '">' + v + '</span>';
       else return v;
     }).join('');
   }
@@ -53,8 +54,8 @@ function getHighlightedResultsList(className, dataList) {
        */
       var tempDataList = clone(dataList);
 
-      tempDataList.data = tempDataList.data.map(function(data){
-        tempDataList.searchInProps.forEach(function(key){
+      tempDataList.data = tempDataList.data.map(function(data) {
+        tempDataList.searchInProps.forEach(function(key) {
           if (data[key]) data[key] = getHighlightedString(data[key].slice(1), className);
         });
         return data;
