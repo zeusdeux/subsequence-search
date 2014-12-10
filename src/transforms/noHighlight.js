@@ -1,5 +1,4 @@
 var util     = require('../util');
-var cu       = require('auto-curry');
 var messages = require('../messages');
 var clone    = util.clone;
 var isArray  = util.isArray;
@@ -42,4 +41,4 @@ function getResultsList(dataList) {
   else throw new SyntaxError(messages.DataMustBeArrayOrObject);
 }
 
-module.exports = cu(getResultsList);
+module.exports = getResultsList;
