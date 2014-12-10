@@ -37,6 +37,7 @@ function search(transforms, dataList, searchString) {
   if (isArrayAndContainsNonString(dataList)) throw new SyntaxError(messages.DataMustBeStringArray);
   if ('string' !== typeof searchString) throw new SyntaxError(messages.SearchStringMustBeString);
 
+  //no transforms warning
   if (!transforms || !Object.keys(transforms).length) {
     console.warn(messages.NoTransformsWarning);
     transforms = {};
@@ -45,37 +46,36 @@ function search(transforms, dataList, searchString) {
   //validations done
   //start actual logic
   if (
-      dataList.length <= 0                          ||
-      (dataList.data && dataList.data.length <= 0)  ||
-      (dataList.searchInProps && dataList.searchInProps.length <= 0)  ||
-      Object.keys(dataList).length <= 0
-     ) return dataList;
+    dataList.length <= 0                                            ||
+    (dataList.data && dataList.data.length <= 0)                    ||
+    (dataList.searchInProps && dataList.searchInProps.length <= 0)  ||
+    Object.keys(dataList).length <= 0
+  ) return dataList;
 
-  if (searchString) {
-    //get matched list
-    resultList = util.getMatchedList(dataList, util.getRegex(searchString));
-    if (isArray(resultList)) {
-      //remove all `null` elements from array
-      resultList = resultList.filter(function(v) {
-        return !!v;
-      });
-    }
-    else {
-      resultList.data = resultList.data.filter(function(v) {
-        return !!v;
-      });
-    }
-    //apply transforms
-    Object.keys(transforms).forEach(function(v) {
-      v = transforms[v];
-      if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
-      resultList = v(resultList);
+
+  //get matched list
+  resultList = util.getMatchedList(dataList, util.getRegex(searchString));
+  if (isArray(resultList)) {
+    //remove all `null` elements from array
+    resultList = resultList.filter(function(v) {
+      return !!v;
     });
-    //return result
-    return resultList;
   }
-  //return data as is if searchString is falsy
-  else return dataList;
+  else {
+    resultList.data = resultList.data.filter(function(v) {
+      return !!v;
+    });
+  }
+
+  //apply transforms
+  Object.keys(transforms).forEach(function(v) {
+    v = transforms[v];
+    if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
+    resultList = v(resultList);
+  });
+
+  //return result
+  return resultList;
 }
 
 module.exports = {
