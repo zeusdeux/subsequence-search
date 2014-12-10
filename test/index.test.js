@@ -22,6 +22,23 @@ var data2 = {
   }],
   searchInProps: ['b', 'c']
 };
+var data3 = [
+  'Daivine Moving & Storage - 845 3rd Ave, New York (212-244-4011)',
+  'Gilmore Car Museum - 6865 W Hickory Rd, Illinois (269-671-5089)',
+  'Waterfront Fountains - 202 Murberry Rd, Illinois (269-123-4322)',
+  'Arya Bhavan - 2508 W Devon Ave, Chicago (773-274-5800)',
+  'CHAAT BHAVAN - 5355 Mowry Ave, Fremont (510-795-1100)',
+  'Carpenter School - 4250 Central Blvd, Ann Arbor (734-997-1214)',
+  'Carpenter Community Charter School - 3909 Carpenter Ave, Studio City (818-761-4363)',
+  'Vivere - 71 W Monroe St, Chicago (312-332-4040)',
+  'Total Plumbing & Heating Inc - 1671 Utica Ave, Brooklyn (718-377-1900)',
+  'Saravana Bhavan -  Wood Ave, Edison (732-767-0033)',
+  'Madras Cafe - 1177 W El Camino Real, Sunnyvale (408-737-2323)',
+  'Saravanaa Bhavan - 81 Lexington Ave, New York (212-679-0204)',
+  'Saravana Bhavan - 1305 S Mary Ave, Sunnyvale (309-493-50396)',
+  'Mr Drain Plumbing - 1556 Halford Ave, Santa Clara (408-907-2786)',
+  'Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)'
+];
 var rank = require('../src/transforms/rank');
 var highlight = require('../src/transforms/highlight');
 var noHighlight = require('../src/transforms/noHighlight');
@@ -90,9 +107,9 @@ describe('index#search', function() {
             return v + ' dude';
           });
         }
-      }, data, '');
+      }, data3, '');
 
-      res.should.eql(data.map(function(v) {
+      res.should.eql(data3.map(function(v) {
         return v + ' dude';
       }));
 
@@ -104,8 +121,8 @@ describe('index#search', function() {
             return v + ' dude';
           });
         }
-      }, data, '');
-      res.should.eql(data.map(function(v) {
+      }, data3, '');
+      res.should.eql(data3.map(function(v) {
         return v + ' dude';
       }));
     });
