@@ -57,7 +57,7 @@ If you use a UMD compatible loader like `require.js` then go ahead and `require(
 - `transforms` is an `object` containing `transform` functions (`transforms` are explained [later](#transforms))
   + `transform` functions are applied *in order* to the data list got after matching `searchString` and `dataList`.
 
-- `dataList` is an array of `string`s that you want to match against or an` object` with `data` and `searchInProps` properties.
+- `dataList` is an array of `string`s that you want to match against or an` object` (__that has no circular references__) with `data` and `searchInProps` properties.
   + `data` is an `Array` of objects
   + `searchInProps` is an `Array` of the properties that you want to search for the `searchString` in. They should be valid properties contained in the each object in the `data` array
   + example
