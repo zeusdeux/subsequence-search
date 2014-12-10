@@ -1,6 +1,6 @@
 {
   "name": "subsequence-search",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Search for a given subsequence in a list of strings and transform the resulting list as required",
   "main": "./src/index.js",
   "dependencies": {
