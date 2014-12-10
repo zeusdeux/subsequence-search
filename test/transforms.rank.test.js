@@ -47,10 +47,13 @@ describe('transforms#rank', function() {
         searchInProps: ['b', 'c']
       };
       var data3 = {
-        data: [
-          {id: 1, text: 'some more text'},
-          {id: 2, text: 'some text'}
-        ],
+        data: [{
+          id: 1,
+          text: 'some more text'
+        }, {
+          id: 2,
+          text: 'some text'
+        }],
         searchInProps: ['text']
       };
 
