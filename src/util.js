@@ -68,7 +68,7 @@ function isArray(arg) {
  * @param  {Any}  arg
  * @return {Boolean}
  */
-function isString(arg){
+function isString(arg) {
   return 'string' === typeof arg;
 }
 
@@ -86,7 +86,7 @@ function clone(obj) {
   var temp;
   if (isObject(obj)) {
     temp = {};
-    for (var key in obj){
+    for (var key in obj) {
       if (obj.hasOwnProperty(key)) temp[key] = obj[key];
     }
     return temp;
