@@ -169,7 +169,19 @@ function getRankedList(rankByKey, dataList) {
       //create a duplicate of dataList to prevent
       //mutation of Array pointed to by dataList as `sort` is in-situ
       tempDataList = dataList.slice(0);
-      return tempDataList.sort(getRankingFnForIndices(rankByKey));
+
+      //if the rank of all elements is 0 then return input dataList
+      //as is as its the searchString falsy to index#search condition
+      //We have to do this cuz browsers dont use stable sorting
+      //check: http://blog.rodneyrehm.de/archives/14-Sorting-Were-Doing-It-Wrong.html
+      if (
+        tempDataList
+        .reduce(function(p, c) {
+          //rank for all will be 0 when searchString is falsy
+          return p + getRank(getIndicesOfCaptures(c[rankByKey], c));
+        }, 0) === 0
+      ) return tempDataList;
+      else return tempDataList.sort(getRankingFnForIndices(rankByKey));
     }
     else {
       /*
@@ -181,9 +193,25 @@ function getRankedList(rankByKey, dataList) {
 
       //cloning to prevent mutations as objects are passed by reference
       tempDataList = clone(dataList);
-      //rank the items in tempDataList.data based on ranking key provided
-      //its in-situ. freaking js sort.
-      tempDataList.data.sort(getRankingFnForIndices(rankByKey, 0));
+
+      //if the rank of all elements is 0 then return input dataList
+      //as is as its the searchString falsy to index#search condition
+      //else run the sort
+      //We have to do this cuz browsers dont use stable sorting
+      //check: http://blog.rodneyrehm.de/archives/14-Sorting-Were-Doing-It-Wrong.html
+      if (
+        tempDataList.data
+        .reduce(function(p, c) {
+          //rank for all will be 0 when searchString is falsy
+          if (c[rankByKey]) return p + getRank(getIndicesOfCaptures(c[rankByKey][0], c[rankByKey]));
+          else return p;
+        },0) < 0
+      ) {
+        //rank the items in tempDataList.data based on ranking key provided
+        //its in-situ. freaking js sort.
+        tempDataList.data.sort(getRankingFnForIndices(rankByKey, 0));
+      }
+
       return tempDataList;
     }
   }
