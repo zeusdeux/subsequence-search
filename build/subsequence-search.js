@@ -582,7 +582,7 @@ function getMatchedList(dataList, regex) {
   if (isObject(dataList)) {
     if (isArray(dataList)) {
       return dataList.map(function(v) {
-        return v.trim().match(regex);
+        return v.match(regex);
       });
     }
     else {
@@ -601,7 +601,7 @@ function getMatchedList(dataList, regex) {
         keysWithMatchesCount = dataList.searchInProps.filter(function(prop) {
           //hidden side-effect T_T
           //move on functional boys
-          if (isString(obj[prop])) temp[prop] = obj[prop].trim().match(regex);
+          if (isString(obj[prop])) temp[prop] = obj[prop].match(regex);
           else throw new SyntaxError(messages.OnlyStringsAreSearchable);
           return !!temp[prop];
         }).length;
