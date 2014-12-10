@@ -22,6 +22,9 @@ var data2 = {
   }],
   searchInProps: ['b', 'c']
 };
+var rank = require('../src/transforms/rank');
+var highlight = require('../src/transforms/highlight');
+var noHighlight = require('../src/transforms/noHighlight');
 
 
 describe('index#search', function() {
@@ -79,14 +82,38 @@ describe('index#search', function() {
     });
   });
   describe('when empty search string is passed', function() {
-    it('should return back the data list as is', function() {
-      var res = index.search({}, data, '');
-      res.should.be.exactly(data);
+    it('should return back the data list as is with given transforms applied', function() {
+      var res = index.search({
+        noHighlight: noHighlight,
+        pluck: function(d) {
+          return d.map(function(v) {
+            return v + ' dude';
+          });
+        }
+      }, data, '');
+
+      res.should.eql(data.map(function(v) {
+        return v + ' dude';
+      }));
+
+      res = index.search({
+        rank: rank(0),
+        highlight: highlight('dude'),
+        pluck: function(d) {
+          return d.map(function(v) {
+            return v + ' dude';
+          });
+        }
+      }, data, '');
+      res.should.eql(data.map(function(v) {
+        return v + ' dude';
+      }));
     });
   });
   describe('when transforms is not an object or empty', function() {
     it('should not alter the ordering or elements in the result set', function() {
       var res = index.search({}, data, 'fo');
+
       res[0].join().should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (510-795-1100),CHAAT BHAVAN - 5355 Mowry Ave, ,F,rem,o,,nt (510-795-1100)');
       res[1].join().should.be.exactly('Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990),,F,,o,,x Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)');
 
@@ -122,6 +149,17 @@ describe('index#search', function() {
       output[2].a.should.be.exactly(30);
       output[2].b.should.be.exactly('go<span class="highlighted">d</span> no d<span class="highlighted">u</span><span class="highlighted">d</span><span class="highlighted">e</span>. dafaq?!');
       (output[2].c === null).should.be.exactly(true);
+    });
+  });
+  describe('when search string doesnt match any input', function() {
+    it('should return output with transforms applied', function() {
+      var output = index.search({
+        rank: index.transforms.rank('b'),
+        hh: index.transforms.highlight('highlighted')
+      }, data2, 'palfaksja');
+
+      output.data.length.should.be.exactly(0);
+      output.searchInProps.should.eql(data2.searchInProps);
     });
   });
 });
