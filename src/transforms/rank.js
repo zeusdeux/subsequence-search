@@ -30,7 +30,7 @@ function getRank(indicesArray) {
   if (indicesArray) {
     firstElementIndex = indicesArray[1];
     groupingScore = indicesArray
-      //get all odd indices
+      //get all odd indices because they correspond to the capture groups in the regex (see util#getRegex)
       .filter(function(v, i) {
         return i % 2 !== 0;
       })
@@ -131,6 +131,13 @@ function getRankingFnForIndices(idx1, idx2) {
       else {
         var aLen = idx2 || idx2 === 0 ? a[idx1][idx2].length : a[idx1].length;
         var bLen = idx2 || idx2 === 0 ? b[idx1][idx2].length : b[idx1].length;
+
+        //an element can have rank 0 only if the indices array for it contained only zeroes
+        //that can happen only when the regex used was for searchString === ''
+        //which means empty searchString was given to index#search
+        //So just return 0 i.e., don't change the order of elements
+        //and keep em as is
+        if (aRank === 0 && bRank === 0) return 0;
         if (aLen < bLen) return -1;
         if (aLen > bLen) return 1;
         return 0;
