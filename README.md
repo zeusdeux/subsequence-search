@@ -198,6 +198,8 @@ Keeping that in mind, you can do what you wish in those `transform` functions to
 
 - `noHighlight`: returns back an array of plaintext matches
 
+- `noResults`: returns a `string` that the user provides as input or default string ('No results found.') when input search string isn't found in input data
+
 These are available on the `transforms` property on the object you get when you do `require('subsequence-search')` i.e.,
 
 ```javascript
