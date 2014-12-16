@@ -1,4 +1,4 @@
-var util = require('../src/util');
+var util      = require('../src/util');
 var highlight = require('../src/transforms/highlight')('highlight');
 
 describe('transforms#highlight', function() {
