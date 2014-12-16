@@ -33,7 +33,7 @@ function getHighlightedString(arr, className) {
 /**
  * Gives back a transformed list of strings which contain matched items surrounded by span tags and given
  * css class
- * @param  {String} className Valid css class name
+ * @param  {String}           className Valid css class name
  * @param  {Object or Array}  dataList  List of matched items
  * @return {Object or Array}            List of transformed, highlighted (by given class name) strings
  */

@@ -156,8 +156,7 @@ function getMatchedList(dataList, regex) {
          * in its place, effectively removing that element from the
          * final list.
          */
-        if (keysWithMatchesCount > 0)
-          return temp;
+        if (keysWithMatchesCount > 0) return temp;
         else return null;
       });
       return tempDataList;

@@ -45,6 +45,13 @@ function search(transforms, dataList, searchString) {
 
   //validations done
   //start actual logic
+
+  //return dataList as is, if
+  //  - dataList is an array and is empty
+  //  - dataList is an object
+  //    * it has data prop which is an array and that data prop is an empty array
+  //    * it has searchInProps property which is an array and is empty
+  //  - dataList is an empty object i.e., {}
   if (
     dataList.length <= 0                                            ||
     (dataList.data && dataList.data.length <= 0)                    ||
@@ -69,9 +76,8 @@ function search(transforms, dataList, searchString) {
 
   //apply transforms
   Object.keys(transforms).forEach(function(v) {
-    v = transforms[v];
-    if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
-    resultList = v(resultList);
+    if ('function' !== typeof transforms[v]) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
+    resultList = transforms[v](resultList);
   });
 
   //return result

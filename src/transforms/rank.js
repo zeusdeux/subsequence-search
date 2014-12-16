@@ -47,7 +47,7 @@ function getRank(indicesArray) {
     //make a small number larger so that
     //a large rank means that it should be
     //higher in the list
-    //(negative smaller number is greater than negative bigger number)
+    //(negative smaller number is greater than negative bigger number son)
     return groupingScore * -1;
   }
   else return -9999999;
@@ -205,7 +205,7 @@ function getRankedList(rankByKey, dataList) {
           //rank for all will be 0 when searchString is falsy
           if (c[rankByKey]) return p + getRank(getIndicesOfCaptures(c[rankByKey][0], c[rankByKey]));
           else return p;
-        },0) < 0
+        }, 0) < 0
       ) {
         //rank the items in tempDataList.data based on ranking key provided
         //its in-situ. freaking js sort.
