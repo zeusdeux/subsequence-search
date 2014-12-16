@@ -60,6 +60,13 @@ function search(transforms, dataList, searchString) {
 
   //validations done
   //start actual logic
+
+  //return dataList as is, if
+  //  - dataList is an array and is empty
+  //  - dataList is an object
+  //    * it has data prop which is an array and that data prop is an empty array
+  //    * it has searchInProps property which is an array and is empty
+  //  - dataList is an empty object i.e., {}
   if (
     dataList.length <= 0                                            ||
     (dataList.data && dataList.data.length <= 0)                    ||
@@ -84,9 +91,8 @@ function search(transforms, dataList, searchString) {
 
   //apply transforms
   Object.keys(transforms).forEach(function(v) {
-    v = transforms[v];
-    if ('function' !== typeof v) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
-    resultList = v(resultList);
+    if ('function' !== typeof transforms[v]) throw new SyntaxError(messages.TransformMustBeSingleArgFunction);
+    resultList = transforms[v](resultList);
   });
 
   //return result
@@ -148,7 +154,7 @@ function getHighlightedString(arr, className) {
 /**
  * Gives back a transformed list of strings which contain matched items surrounded by span tags and given
  * css class
- * @param  {String} className Valid css class name
+ * @param  {String}           className Valid css class name
  * @param  {Object or Array}  dataList  List of matched items
  * @return {Object or Array}            List of transformed, highlighted (by given class name) strings
  */
@@ -279,7 +285,7 @@ function getRank(indicesArray) {
     //make a small number larger so that
     //a large rank means that it should be
     //higher in the list
-    //(negative smaller number is greater than negative bigger number)
+    //(negative smaller number is greater than negative bigger number son)
     return groupingScore * -1;
   }
   else return -9999999;
@@ -437,7 +443,7 @@ function getRankedList(rankByKey, dataList) {
           //rank for all will be 0 when searchString is falsy
           if (c[rankByKey]) return p + getRank(getIndicesOfCaptures(c[rankByKey][0], c[rankByKey]));
           else return p;
-        },0) < 0
+        }, 0) < 0
       ) {
         //rank the items in tempDataList.data based on ranking key provided
         //its in-situ. freaking js sort.
@@ -611,8 +617,7 @@ function getMatchedList(dataList, regex) {
          * in its place, effectively removing that element from the
          * final list.
          */
-        if (keysWithMatchesCount > 0)
-          return temp;
+        if (keysWithMatchesCount > 0) return temp;
         else return null;
       });
       return tempDataList;
