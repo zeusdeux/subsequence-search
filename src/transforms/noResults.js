@@ -1,5 +1,4 @@
 var util     = require('../util');
-var cu       = require('auto-curry');
 var messages = require('../messages');
 var isArray  = util.isArray;
 var isObject = util.isObject;
@@ -20,4 +19,4 @@ function noResults(msg) {
   };
 }
 
-module.exports = cu(noResults);
+module.exports = noResults;

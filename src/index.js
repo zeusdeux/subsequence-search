@@ -2,6 +2,7 @@ var util            = require('./util');
 var cu              = require('auto-curry');
 var messages        = require('./messages');
 var rank            = require('./transforms/rank');
+var noResults       = require('./transforms/noResults');
 var highlight       = require('./transforms/highlight');
 var noHighlight     = require('./transforms/noHighlight');
 var or              = util.or;
@@ -89,6 +90,7 @@ module.exports = {
   transforms: {
     rank: rank,
     highlight: highlight,
+    noResults: noResults,
     noHighlight: noHighlight
   }
 };
