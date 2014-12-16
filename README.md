@@ -212,7 +212,8 @@ var data = ['there is some fog', 'have an apple', 'omg! potato?', 'foxes are kin
 
 console.log(subsearch.search({
   rank: subsearch.transforms.rank(0),
-  highlight: subsearch.transforms.highlight('highlightClass')
+  highlight: subsearch.transforms.highlight('highlightClass'),
+  noResults: subsearch.transforms.noResults('No results found for your input.')
 }, data, 'fo'));
 //output
 //["<span class="highlightClass">f</span><span class="highlightClass">o</span>xes are kinda cool!", "there is some <span class="highlightClass">f</span><span class="highlightClass">o</span>g"]
