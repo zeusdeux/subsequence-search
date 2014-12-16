@@ -17,6 +17,7 @@ var util            = require('./util');
 var cu              = require('auto-curry');
 var messages        = require('./messages');
 var rank            = require('./transforms/rank');
+var noResults       = require('./transforms/noResults');
 var highlight       = require('./transforms/highlight');
 var noHighlight     = require('./transforms/noHighlight');
 var or              = util.or;
@@ -104,11 +105,12 @@ module.exports = {
   transforms: {
     rank: rank,
     highlight: highlight,
+    noResults: noResults,
     noHighlight: noHighlight
   }
 };
 
-},{"./messages":3,"./transforms/highlight":4,"./transforms/noHighlight":5,"./transforms/rank":6,"./util":7,"auto-curry":1}],3:[function(require,module,exports){
+},{"./messages":3,"./transforms/highlight":4,"./transforms/noHighlight":5,"./transforms/noResults":6,"./transforms/rank":7,"./util":8,"auto-curry":1}],3:[function(require,module,exports){
 module.exports={
   "DataMustBeArrayOrObject": "Data given to search function must be an array or object",
   "DataMustBeStringArray": "Data given to search function must be an array of strings",
@@ -189,7 +191,7 @@ function getHighlightedResultsList(className, dataList) {
 
 module.exports = cu(getHighlightedResultsList);
 
-},{"../messages":3,"../util":7,"auto-curry":1}],5:[function(require,module,exports){
+},{"../messages":3,"../util":8,"auto-curry":1}],5:[function(require,module,exports){
 var util     = require('../util');
 var messages = require('../messages');
 var clone    = util.clone;
@@ -235,7 +237,31 @@ function getResultsList(dataList) {
 
 module.exports = getResultsList;
 
-},{"../messages":3,"../util":7}],6:[function(require,module,exports){
+},{"../messages":3,"../util":8}],6:[function(require,module,exports){
+var util     = require('../util');
+var messages = require('../messages');
+var isArray  = util.isArray;
+var isObject = util.isObject;
+
+
+function noResults(msg) {
+  return function(dataList) {
+    if (isObject(dataList)) {
+      if (isArray(dataList)) {
+        if (!dataList.length) dataList.push(msg || 'No Results found.');
+      }
+      else {
+        if (isArray(dataList.data) && !dataList.data.length) dataList.data.push(msg || 'No Results found.');
+      }
+      return dataList;
+    }
+    else throw new SyntaxError(messages.DataMustBeArrayOrObject);
+  };
+}
+
+module.exports = noResults;
+
+},{"../messages":3,"../util":8}],7:[function(require,module,exports){
 var util     = require('../util');
 var cu       = require('auto-curry');
 var messages = require('../messages');
@@ -458,7 +484,7 @@ function getRankedList(rankByKey, dataList) {
 
 module.exports = cu(getRankedList);
 
-},{"../messages":3,"../util":7,"auto-curry":1}],7:[function(require,module,exports){
+},{"../messages":3,"../util":8,"auto-curry":1}],8:[function(require,module,exports){
 var cu       = require('auto-curry');
 var messages = require('./messages');
 
