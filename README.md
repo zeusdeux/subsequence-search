@@ -222,6 +222,12 @@ console.log(subsearch.search({
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ###Changelog
+- 0.3.3
+  + Added a new transform called the `noResults` transform. This transform accepts a string that is displayed when no results are found
+
+   ```javascript
+   var s = window.subsequenceSearch.search({ noResults: window.subsequenceSearch.transforms.noResults('No results found.')});
+   ```
 - 0.3.2
   + Built in a workaround for the instability of `Array.prototype.sort` implemented by browser vendors
 - 0.3.1
