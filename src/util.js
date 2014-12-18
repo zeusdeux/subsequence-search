@@ -33,6 +33,29 @@ function or(fn1, fn2) {
   };
 }
 
+/**
+ * zip :: [a] -> [b] -> [[a, b]]
+ * (Not a valid haskell type signature nor is it the usual type sign., for zip, I know.)
+ */
+
+/**
+ * Takes two arrays and returns an array of arrays that each have
+ * a pair of elements, one from each array.
+ * Example zip [1,2,3] [4,5] = [[1,4], [2,5]]
+ * @param  {Array}  Input array one
+ * @param  {Array}  Input array two
+ * @return {Array}  Zipped array
+ */
+function zip(xs, ys) {
+  var zipped = [];
+
+  if (!isArray(xs) || !isArray(ys)) throw new Error(messages.InputMustBeArray);
+  xs = xs.slice();
+  ys = ys.slice();
+  while (xs.length && ys.length) zipped.push([xs.shift(), ys.shift()]);
+  return zipped;
+}
+
 /*
  * isObject :: Anything -> Bool
  */
@@ -106,6 +129,23 @@ function clone(obj) {
  */
 function getRegex(str) {
   var s = str.split('').map(function(v) {
+    //escape special chars
+    if (
+        '*' === v   ||
+        '.' === v   ||
+        '+' === v   ||
+        '(' === v   ||
+        ')' === v   ||
+        '\\' === v  ||
+        '?' === v   ||
+        '\'' === v  ||
+        '$' === v   ||
+        '^' === v   ||
+        '/' === v   ||
+        '[' === v   ||
+        ']' === v
+      ) v = '\\' + v;
+
     return '(' + v + ')';
   });
   s = '^(.*?)' + s.join('(.*?)') + '(.*?)(.*)$';
@@ -168,6 +208,7 @@ function getMatchedList(dataList, regex) {
 module.exports = {
   or: cu(or),
   and: cu(and),
+  zip: cu(zip),
   clone: clone,
   isArray: isArray,
   isObject: isObject,
