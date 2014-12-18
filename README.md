@@ -9,6 +9,7 @@ Out of the box it can be made to behave a lot like the sublime text fuzzy search
 The resulting list can be transformed using chainable [transforms](#transforms).
 
 Demo it [here](http://codepen.io/zeusdeux/pen/WbwNJE).
+Demo showing special character support is [here](http://codepen.io/zeusdeux/pen/emzery?editors=101).
 
 ###Installation
 
