@@ -1,6 +1,6 @@
 var index = require('../src/');
 var data = [
-  'CHAAT BHAVAN - 5355 Mowry Ave, Fremont (510-795-1100)',
+  'CHAAT BHAVAN - 5355 Mowry Ave, Fremont (*+\\510-795-1100)',
   'Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)',
   'Mr Drain Plumbing - 1556 Halford Ave, Santa Clara (408-907-2786)',
   'Madras Cafe - 1177 W El Camino Real, Sunnyvale (408-737-2323)',
@@ -54,6 +54,14 @@ describe('index#search', function() {
 
       res.length.should.be.eql(4);
       res[0].should.be.exactly('<span class="highlight">F</span><span class="highlight">o</span>x Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)');
+
+      res = index.search({
+        rank: index.transforms.rank(0),
+        noHighlight: index.transforms.noHighlight
+      }, data, '(*+\\50)');
+
+      res.length.should.be.eql(1);
+      res[0].should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (*+\\510-795-1100)');
     });
   });
   describe('when an empty data list is passed', function() {
@@ -131,11 +139,11 @@ describe('index#search', function() {
     it('should not alter the ordering or elements in the result set', function() {
       var res = index.search({}, data, 'fo');
 
-      res[0].join().should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (510-795-1100),CHAAT BHAVAN - 5355 Mowry Ave, ,F,rem,o,,nt (510-795-1100)');
+      res[0].join().should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (*+\\510-795-1100),CHAAT BHAVAN - 5355 Mowry Ave, ,F,rem,o,,nt (*+\\510-795-1100)');
       res[1].join().should.be.exactly('Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990),,F,,o,,x Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)');
 
       res = index.search(void 0, data, 'fo');
-      res[0].join().should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (510-795-1100),CHAAT BHAVAN - 5355 Mowry Ave, ,F,rem,o,,nt (510-795-1100)');
+      res[0].join().should.be.exactly('CHAAT BHAVAN - 5355 Mowry Ave, Fremont (*+\\510-795-1100),CHAAT BHAVAN - 5355 Mowry Ave, ,F,rem,o,,nt (*+\\510-795-1100)');
       res[1].join().should.be.exactly('Fox Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990),,F,,o,,x Plumbing & Heating - 7501 2nd Ave S, Seattle (206-654-4990)');
     });
   });
