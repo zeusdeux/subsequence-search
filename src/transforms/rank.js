@@ -1,8 +1,8 @@
-var util     = require('../util');
-var cu       = require('auto-curry');
+var util = require('../util');
+var cu = require('auto-curry');
 var messages = require('../messages');
-var clone    = util.clone;
-var isArray  = util.isArray;
+var clone = util.clone;
+var isArray = util.isArray;
 var isObject = util.isObject;
 
 
@@ -10,9 +10,10 @@ var isObject = util.isObject;
  * How it works:
  *
  * Indices array is:
- * [31, 35, 36, 40]
- * (31-31) (35-31) (36-31) (40 - 31) = 18
- *    0       4       5        9     = 18 (this number denotes loose/tight grouping)
+ * [31, 35, 36, 41]
+ * Get distance between adjacent elements
+ * (35 - 31) + (36 - 35) + (41 - 36) = 10
+ *     4     +     1     +     5     = 10 (this number denotes loose/tight grouping)
  * closely grouped matches have a higher rank than
  * loosely grouped matches in this scheme
  * getRank :: Array -> Int
@@ -26,23 +27,25 @@ var isObject = util.isObject;
 function getRank(indicesArray) {
   var firstElementIndex;
   var groupingScore;
+  var tempArray;
 
   if (indicesArray) {
     firstElementIndex = indicesArray[1];
-    groupingScore = indicesArray
+
+    tempArray = indicesArray
       //get all odd indices because they correspond to the capture groups in the regex (see util#getRegex)
       .filter(function(v, i) {
         return i % 2 !== 0;
       })
       //remove last element (corresponds to last capture group in regex i.e., .*)
-      .slice(0, -1)
-      //get distance from first capture group index
-      .map(function(v) {
-        return v - firstElementIndex;
-      })
-      //sum grouping up to get grouping score
+      .slice(0, -1);
+
+    //slicing 1st element from 'ys' to zip adjacent indices together
+    groupingScore = util.zip(tempArray, tempArray.slice(1))
+      //get distance between adjacent matches
+      //and sum em up to get grouping score
       .reduce(function(p, c) {
-        return p + c;
+        return p + (c[1] - c[0]);
       }, 0);
     //make a small number larger so that
     //a large rank means that it should be
