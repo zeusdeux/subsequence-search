@@ -11,7 +11,9 @@ function noResults(msg) {
         if (!dataList.length) dataList.push(msg || 'No Results found.');
       }
       else {
-        if (isArray(dataList.data) && !dataList.data.length) dataList.data.push(msg || 'No Results found.');
+        if (isArray(dataList.data) && !dataList.data.length) dataList.data.push({
+          noResult: msg || 'No results found.'
+        });
       }
       return dataList;
     }
