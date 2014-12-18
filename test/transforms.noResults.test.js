@@ -32,7 +32,9 @@ describe('transforms#noResults', function() {
       temp = search({
         noResults: noResults('No results found son.')
       }, data2, 'zebra');
-      temp.data.should.be.eql(['No results found son.']);
+      temp.data.should.be.eql([{
+        noResult: 'No results found son.'
+      }]);
     });
   });
 });
