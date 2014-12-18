@@ -113,6 +113,7 @@ module.exports = {
 },{"./messages":3,"./transforms/highlight":4,"./transforms/noHighlight":5,"./transforms/noResults":6,"./transforms/rank":7,"./util":8,"auto-curry":1}],3:[function(require,module,exports){
 module.exports={
   "DataMustBeArrayOrObject": "Data given to search function must be an array or object",
+  "InputMustBeArray": "Input must be array",
   "DataMustBeStringArray": "Data given to search function must be an array of strings",
   "SearchStringMustBeString": "Search string provided to search function must be a string",
   "TransformMustBeSingleArgFunction": "Transforms must be a valid function taking one parameter and returing an array",
@@ -251,7 +252,9 @@ function noResults(msg) {
         if (!dataList.length) dataList.push(msg || 'No Results found.');
       }
       else {
-        if (isArray(dataList.data) && !dataList.data.length) dataList.data.push(msg || 'No Results found.');
+        if (isArray(dataList.data) && !dataList.data.length) dataList.data.push({
+          noResult: msg || 'No results found.'
+        });
       }
       return dataList;
     }
@@ -262,11 +265,11 @@ function noResults(msg) {
 module.exports = noResults;
 
 },{"../messages":3,"../util":8}],7:[function(require,module,exports){
-var util     = require('../util');
-var cu       = require('auto-curry');
+var util = require('../util');
+var cu = require('auto-curry');
 var messages = require('../messages');
-var clone    = util.clone;
-var isArray  = util.isArray;
+var clone = util.clone;
+var isArray = util.isArray;
 var isObject = util.isObject;
 
 
@@ -274,9 +277,10 @@ var isObject = util.isObject;
  * How it works:
  *
  * Indices array is:
- * [31, 35, 36, 40]
- * (31-31) (35-31) (36-31) (40 - 31) = 18
- *    0       4       5        9     = 18 (this number denotes loose/tight grouping)
+ * [31, 35, 36, 41]
+ * Get distance between adjacent elements
+ * (35 - 31) + (36 - 35) + (41 - 36) = 10
+ *     4     +     1     +     5     = 10 (this number denotes loose/tight grouping)
  * closely grouped matches have a higher rank than
  * loosely grouped matches in this scheme
  * getRank :: Array -> Int
@@ -290,23 +294,25 @@ var isObject = util.isObject;
 function getRank(indicesArray) {
   var firstElementIndex;
   var groupingScore;
+  var tempArray;
 
   if (indicesArray) {
     firstElementIndex = indicesArray[1];
-    groupingScore = indicesArray
+
+    tempArray = indicesArray
       //get all odd indices because they correspond to the capture groups in the regex (see util#getRegex)
       .filter(function(v, i) {
         return i % 2 !== 0;
       })
       //remove last element (corresponds to last capture group in regex i.e., .*)
-      .slice(0, -1)
-      //get distance from first capture group index
-      .map(function(v) {
-        return v - firstElementIndex;
-      })
-      //sum grouping up to get grouping score
+      .slice(0, -1);
+
+    //slicing 1st element from 'ys' to zip adjacent indices together
+    groupingScore = util.zip(tempArray, tempArray.slice(1))
+      //get distance between adjacent matches
+      //and sum em up to get grouping score
       .reduce(function(p, c) {
-        return p + c;
+        return p + (c[1] - c[0]);
       }, 0);
     //make a small number larger so that
     //a large rank means that it should be
@@ -520,6 +526,29 @@ function or(fn1, fn2) {
   };
 }
 
+/**
+ * zip :: [a] -> [b] -> [[a, b]]
+ * (Not a valid haskell type signature nor is it the usual type sign., for zip, I know.)
+ */
+
+/**
+ * Takes two arrays and returns an array of arrays that each have
+ * a pair of elements, one from each array.
+ * Example zip [1,2,3] [4,5] = [[1,4], [2,5]]
+ * @param  {Array}  Input array one
+ * @param  {Array}  Input array two
+ * @return {Array}  Zipped array
+ */
+function zip(xs, ys) {
+  var zipped = [];
+
+  if (!isArray(xs) || !isArray(ys)) throw new Error(messages.InputMustBeArray);
+  xs = xs.slice();
+  ys = ys.slice();
+  while (xs.length && ys.length) zipped.push([xs.shift(), ys.shift()]);
+  return zipped;
+}
+
 /*
  * isObject :: Anything -> Bool
  */
@@ -593,6 +622,23 @@ function clone(obj) {
  */
 function getRegex(str) {
   var s = str.split('').map(function(v) {
+    //escape special chars
+    if (
+        '*' === v   ||
+        '.' === v   ||
+        '+' === v   ||
+        '(' === v   ||
+        ')' === v   ||
+        '\\' === v  ||
+        '?' === v   ||
+        '\'' === v  ||
+        '$' === v   ||
+        '^' === v   ||
+        '/' === v   ||
+        '[' === v   ||
+        ']' === v
+      ) v = '\\' + v;
+
     return '(' + v + ')';
   });
   s = '^(.*?)' + s.join('(.*?)') + '(.*?)(.*)$';
@@ -655,6 +701,7 @@ function getMatchedList(dataList, regex) {
 module.exports = {
   or: cu(or),
   and: cu(and),
+  zip: cu(zip),
   clone: clone,
   isArray: isArray,
   isObject: isObject,
