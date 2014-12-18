@@ -231,6 +231,8 @@ It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequenc
    ```javascript
    var s = window.subsequenceSearch.search({ noResults: window.subsequenceSearch.transforms.noResults('No results found.')});
    ```
+   + Fixed the `rank` transform. It now calculates grouping score correctly
+   + Fixed `searchString` with special characters ('*', '+', '(', etc) breaking `subsequence-search`
 - 0.3.2
   + Built in a workaround for the instability of `Array.prototype.sort` implemented by browser vendors
 - 0.3.1
