@@ -1,5 +1,6 @@
 {
   "DataMustBeArrayOrObject": "Data given to search function must be an array or object",
+  "InputMustBeArray": "Input must be array",
   "DataMustBeStringArray": "Data given to search function must be an array of strings",
   "SearchStringMustBeString": "Search string provided to search function must be a string",
   "TransformMustBeSingleArgFunction": "Transforms must be a valid function taking one parameter and returing an array",
