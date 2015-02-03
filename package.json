@@ -1,10 +1,11 @@
 {
   "name": "subsequence-search",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Search for a given subsequence in a list of strings and transform the resulting list as required",
   "main": "./src/index.js",
   "dependencies": {
-    "auto-curry": "^0.2.0"
+    "auto-curry": "^0.2.0",
+    "clone": "^0.2.0"
   },
   "devDependencies": {
     "browserify": "^5.12.0",
