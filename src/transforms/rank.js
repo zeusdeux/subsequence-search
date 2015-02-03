@@ -1,8 +1,8 @@
-var util = require('../util');
-var cu = require('auto-curry');
+var util     = require('../util');
+var cu       = require('auto-curry');
 var messages = require('../messages');
-var clone = util.clone;
-var isArray = util.isArray;
+var clone    = util.clone;
+var isArray  = util.isArray;
 var isObject = util.isObject;
 
 
@@ -72,7 +72,6 @@ function getRank(indicesArray) {
 function getIndicesOfCaptures(inputString, matchedArray) {
   var currIndex;
 
-  if (!inputString || !matchedArray) return void 0;
   if (matchedArray) {
     currIndex = matchedArray.index; //index of first regex match
     if (matchedArray[0] === inputString) matchedArray = matchedArray.slice(1);
@@ -82,6 +81,7 @@ function getIndicesOfCaptures(inputString, matchedArray) {
       return index;
     });
   }
+  else return void 0;
 }
 
 /*
@@ -106,7 +106,8 @@ function getRankingFnForIndices(idx1, idx2) {
      * if we try to index on a falsy value (e.g., a[idx1] = null, a[idx1][idx2] will throw)
      * then it will throw as we can't index on something that isn't present.
      * If we set it to an empty string (or empty array or empty object) then indexing on it
-     * wont throw, but will instead return undefined.
+     * wont throw, but will return undefined cuz strings can have properties as they're objects too
+     * Because you know, JS and its strings 乁( ◔ ౪◔)ㄏ
      * This undefined, when received by getIndicesOfCaptures, it will return undefined too.
      * This undefined when given to getRank, it will return -9999999.
      * Hence, all falsy values will get the same rank and won't be moved.
@@ -150,7 +151,7 @@ function getRankingFnForIndices(idx1, idx2) {
 }
 
 /*
- * sort the input array and return the result as a new array
+ * Sort the input array and return the result as a new array
  * no mutation plz. kthx.
  * getRankedList :: Key -> Object or Array -> Object or Array
  */

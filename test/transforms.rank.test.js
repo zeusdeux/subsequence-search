@@ -1,6 +1,7 @@
 var rank = require('../src/transforms/rank');
 var util = require('../src/util');
 
+
 describe('transforms#rank', function() {
   describe('when two elements have different ranks', function() {
     it('should sort them in ascending order', function() {
@@ -67,4 +68,23 @@ describe('transforms#rank', function() {
       data3.data[0].text[0].should.be.exactly('some text');
     });
   });
+  describe('when the data contains empty strings', function() {
+    it('should work properly', function() {
+      var data = {
+        data:[{
+          a: '',
+          b: 'man'
+        }, {
+          a: 'dude',
+          b: 'what up'
+        }],
+        searchInProps: ['a']
+      };
+
+      data = rank('a', util.getMatchedList(data, util.getRegex('')));
+      data.data[0].b.should.be.exactly('man');
+      data.data[1].b.should.be.exactly('what up');
+    });
+  });
+
 });
