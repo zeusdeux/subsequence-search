@@ -221,11 +221,14 @@ console.log(subsearch.search({
 ```
 
 ###Compatibility
-`subsequence-search` is compatible with browsers that are ES5 compliant.
+`subsequence-search` is compatible with browsers that are ES5 compliant and Node.js > `0.10.x`.
 
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ###Changelog
+- 0.3.4
+  + Fixed a bug where an empty string as the input string would mess with the ranking algorithm
+  + Added `clone` as a dependency for deep cloning, cycle detection, etc
 - 0.3.3
   + Added a new transform called the `noResults` transform. This transform accepts a string that is displayed when no results are found
 
