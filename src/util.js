@@ -1,6 +1,6 @@
+var clone    = require('clone');
 var cu       = require('auto-curry');
 var messages = require('./messages');
-
 /*
  * and :: (a -> Bool) -> (a -> Bool) -> (a -> Bool)
  */
@@ -93,28 +93,6 @@ function isArray(arg) {
  */
 function isString(arg) {
   return 'string' === typeof arg;
-}
-
-/*
- * clone :: Object -> Object
- */
-
-/**
- * Clone the given object
- * Use this only with light objects
- * @param  {Object} obj Any valid javascript object
- * @return {Object}     A clone of the input object
- */
-function clone(obj) {
-  var temp;
-  if (isObject(obj)) {
-    temp = {};
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) temp[key] = obj[key];
-    }
-    return temp;
-  }
-  else throw new SyntaxError(messages.OnlyObjectCanBeCloned);
 }
 
 /*
