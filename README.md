@@ -11,7 +11,7 @@ The resulting list can be transformed using chainable [transforms](#transforms).
 Demo it [here](http://codepen.io/zeusdeux/pen/WbwNJE).
 Demo showing special character support is [here](http://codepen.io/zeusdeux/pen/emzery?editors=101).
 
-###Installation
+### Installation
 
 ```javascript
 npm install subsequence-search --save
@@ -23,13 +23,13 @@ or
 bower install subsequence-search --save
 ```
 
-###Usage
+### Usage
 
-#####Node
+##### Node
 
 Go ahead and `require('subsequence-search)` in your `node` program after installation.
 
-#####Browser
+##### Browser
 
 After installation, serve:
 
@@ -51,9 +51,9 @@ If you use a UMD compatible loader like `require.js` then go ahead and `require(
 >of `transforms` but for varying `searchString`.
 >Cleaner, composable code should be the result.
 
-###API
+### API
 
-####search(transforms, dataList, searchString)
+#### search(transforms, dataList, searchString)
 
 - `transforms` is an `object` containing `transform` functions (`transforms` are explained [later](#transforms))
   + `transform` functions are applied *in order* to the data list got after matching `searchString` and `dataList`.
@@ -135,7 +135,7 @@ console.log(subsearch.search({
 ```
 ![output of using a custom transform to pluck data out](http://i.imgur.com/DyxGeob.png)
 
-###Transforms
+### Transforms
 
 `transforms` is an object can hold multiple `transform` functions.
 
@@ -220,12 +220,12 @@ console.log(subsearch.search({
 //["<span class="highlightClass">f</span><span class="highlightClass">o</span>xes are kinda cool!", "there is some <span class="highlightClass">f</span><span class="highlightClass">o</span>g"]
 ```
 
-###Compatibility
+### Compatibility
 `subsequence-search` is compatible with browsers that are ES5 compliant and Node.js > `0.10.x`.
 
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
-###Changelog
+### Changelog
 - 1.0.0
   + Since `0.3.4` has been in production usage for quite a while, promoting it to stable
 - 0.3.4
