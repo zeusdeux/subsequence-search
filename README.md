@@ -226,6 +226,8 @@ console.log(subsearch.search({
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ### Changelog
+- 1.0.1
+  + Fixed readme for `npm` website
 - 1.0.0
   + Since `0.3.4` has been in production usage for quite a while, promoting it to stable
 - 0.3.4
