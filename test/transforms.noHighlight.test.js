@@ -29,7 +29,7 @@ describe('transforms#noHighlight', function() {
       data2 = noH(util.getMatchedList(data2, util.getRegex('dude')));
       data2.data[0].a.should.be.exactly(30);
       data2.data[0].b.should.be.exactly('god no dude. dafaq?!');
-      (data2.data[0].c === null).should.be.exactly(true);
+      (data2.data[0].c === 'this is weird').should.be.exactly(true);
 
       data2.data[1].a.should.be.exactly(10);
       data2.data[1].b.should.be.exactly('dude what');

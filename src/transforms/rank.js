@@ -118,8 +118,14 @@ function getRankingFnForIndices(idx1, idx2) {
     }
     var aIndices = idx2 || idx2 === 0 ? getIndicesOfCaptures(a[idx1][idx2], a[idx1]) : getIndicesOfCaptures(a[idx1], a);
     var bIndices = idx2 || idx2 === 0 ? getIndicesOfCaptures(b[idx1][idx2], b[idx1]) : getIndicesOfCaptures(b[idx1], b);
-    var aRank = getRank(aIndices);
-    var bRank = getRank(bIndices);
+
+    // if the search was run on multiple props, then even if one prop has results for the given object
+    // the whole object is returned as a match. This is because searchInProps is effectively an "OR" proposition
+    // So in that case, some property without any matches is tagged with __SUBSEARCHNOMATCH__ as true
+    // by util#getMatchedList.
+    // If we find such an element, we return the worst rank
+    var aRank = a[idx1]['__SUBSEARCHNOMATCH__'] ? getRank(null) : getRank(aIndices);
+    var bRank = b[idx1]['__SUBSEARCHNOMATCH__'] ? getRank(null) : getRank(bIndices);
 
     //rank higher? put el before
     if (aRank > bRank) return -1;

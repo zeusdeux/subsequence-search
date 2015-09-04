@@ -162,11 +162,16 @@ function getMatchedList(dataList, regex) {
         var keysWithMatchesCount = 0;
 
         keysWithMatchesCount = dataList.searchInProps.filter(function(prop) {
+          var match = obj[prop].match(regex);
+
           //hidden side-effect T_T
           //move on functional boys
-          if (isString(obj[prop])) temp[prop] = obj[prop].match(regex);
+          if (isString(obj[prop])) temp[prop] = match || obj[prop].match(/(.*)/);
           else throw new SyntaxError(messages.OnlyStringsAreSearchable);
-          return !!temp[prop];
+
+          if (!match) temp[prop]['__SUBSEARCHNOMATCH__'] = true;
+
+          return !!match;
         }).length;
 
         /*

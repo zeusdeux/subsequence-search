@@ -27,9 +27,10 @@ describe('transforms#highlight', function() {
       };
 
       data2 = highlight(util.getMatchedList(data2, util.getRegex('dude')));
+
       data2.data[0].a.should.be.exactly(30);
       data2.data[0].b.should.be.exactly('go<span class="highlight">d</span> no d<span class="highlight">u</span><span class="highlight">d</span><span class="highlight">e</span>. dafaq?!');
-      (data2.data[0].c === null).should.be.ok;
+      (data2.data[0].c === 'this is weird').should.be.ok;
 
       data2.data[1].a.should.be.exactly(10);
       data2.data[1].b.should.be.exactly('<span class="highlight">d</span><span class="highlight">u</span><span class="highlight">d</span><span class="highlight">e</span> what');
