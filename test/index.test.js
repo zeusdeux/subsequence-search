@@ -19,6 +19,10 @@ var data2 = {
     a: 40,
     b: 'dude no',
     c: 'go away dude.'
+  }, {
+    a: 50,
+    b: 'what',
+    c: 'nope'
   }],
   searchInProps: ['b', 'c']
 };
@@ -173,7 +177,9 @@ describe('index#search', function() {
       output[2].should.be.an.Object;
       output[2].a.should.be.exactly(30);
       output[2].b.should.be.exactly('go<span class="highlighted">d</span> no d<span class="highlighted">u</span><span class="highlighted">d</span><span class="highlighted">e</span>. dafaq?!');
-      (output[2].c === null).should.be.exactly(true);
+      (output[2].c === 'this is weird').should.be.exactly(true);
+
+      output.length.should.be.exactly(3);
     });
   });
   describe('when search string doesnt match any input', function() {

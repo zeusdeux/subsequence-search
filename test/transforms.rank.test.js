@@ -59,9 +59,9 @@ describe('transforms#rank', function() {
       };
 
       data2 = rank('c', util.getMatchedList(data2, util.getRegex('dude')));
+
       data2.data[0].a.should.be.exactly(10);
       data2.data[1].a.should.be.exactly(30);
-      data2.data[1].c.should.be.exactly('');
 
       data3 = rank('text', util.getMatchedList(data3, util.getRegex('text')));
       data3.data[0].id.should.be.exactly(2);

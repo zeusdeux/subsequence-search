@@ -226,6 +226,8 @@ console.log(subsearch.search({
 It uses `map`, `reduce`, `filter`, etc heavily so if you need to use `subsequence-search` on older browsers, use a [shim](https://github.com/es-shims/es5-shim).
 
 ### Changelog
+- 2.0.0
+  + Change `searchInProps` behaviour. Now, the properties passed as `searchInProps` are used in an or proposition. If a match for the search string is found in any ONE of the properties passed as `searchInProps`, that data item is returned and the property with no matches is maintained as is. Previously, the property with no matches would be set to `null`.
 - 1.0.1
   + Fixed readme for `npm` website
 - 1.0.0
