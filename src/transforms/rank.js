@@ -124,8 +124,8 @@ function getRankingFnForIndices(idx1, idx2) {
     // So in that case, some property without any matches is tagged with __SUBSEARCHNOMATCH__ as true
     // by util#getMatchedList.
     // If we find such an element, we return the worst rank
-    var aRank = a[idx1]['__SUBSEARCHNOMATCH__'] ? getRank(null) : getRank(aIndices);
-    var bRank = b[idx1]['__SUBSEARCHNOMATCH__'] ? getRank(null) : getRank(bIndices);
+    var aRank = a[idx1].__SUBSEARCHNOMATCH__ ? getRank(null) : getRank(aIndices);
+    var bRank = b[idx1].__SUBSEARCHNOMATCH__ ? getRank(null) : getRank(bIndices);
 
     //rank higher? put el before
     if (aRank > bRank) return -1;

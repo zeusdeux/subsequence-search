@@ -107,7 +107,7 @@ function isString(arg) {
  */
 function getRegex(str) {
   var s = str.split('').map(function(v) {
-    //escape special chars
+    // escape special chars
     if (
         '*'  === v   ||
         '.'  === v   ||
@@ -158,18 +158,25 @@ function getMatchedList(dataList, regex) {
       var tempDataList = clone(dataList);
 
       tempDataList.data = tempDataList.data.map(function(obj) {
-        var temp = clone(obj);
         var keysWithMatchesCount = 0;
+        var matchItALLRegex      = /(.*)/;
+        var temp                 = clone(obj);
 
         keysWithMatchesCount = dataList.searchInProps.filter(function(prop) {
           var match = obj[prop].match(regex);
 
-          //hidden side-effect T_T
-          //move on functional boys
-          if (isString(obj[prop])) temp[prop] = match || obj[prop].match(/(.*)/);
+          /*
+           * hidden side-effect T_T
+           * move on functional boys
+           */
+          if (isString(obj[prop])) temp[prop] = match || obj[prop].match(matchItALLRegex);
           else throw new SyntaxError(messages.OnlyStringsAreSearchable);
 
-          if (!match) temp[prop]['__SUBSEARCHNOMATCH__'] = true;
+          /*
+           * tag the property if it's value had no match
+           * this is used by the ranking transform currently
+           */
+          if (!match) temp[prop].__SUBSEARCHNOMATCH__ = true;
 
           return !!match;
         }).length;
