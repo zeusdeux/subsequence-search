@@ -2113,6 +2113,14 @@ function getMatchedList(dataList, regex) {
           /*
            * hidden side-effect T_T
            * move on functional boys
+           * The matchItALLRegex is to preserve the shape of array stored
+           * in temp[prop]. It should be of the same shape as what is returned
+           * by `.match(regex)` operation.
+           * This is done so that the value doesn't get nulled for a prop.
+           * Now THAT is done since searchInProps is an OR proposition
+           * So we don't want an object where since only one prop matched
+           * only that prop retains its value and the other props that were
+           * also in searchInProps, all get nulled.
            */
           if (isString(obj[prop])) temp[prop] = match || obj[prop].match(matchItALLRegex);
           else throw new SyntaxError(messages.OnlyStringsAreSearchable);
