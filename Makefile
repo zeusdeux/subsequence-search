@@ -15,7 +15,7 @@ all: jshint test $(BUILD)/subsequence-search.min.js
 force: $(BUILD)/subsequence-search.min.js
 
 jshint:
-	$(BIN)/jshint $(SRC)/*.js
+	$(BIN)/jshint $(SRC)/**/*.js
 
 test:
 	$(BIN)/mocha -r should -u bdd -b $(TEST)/*
